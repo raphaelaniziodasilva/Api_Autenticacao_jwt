@@ -3,8 +3,11 @@ import { UnauthorizedError } from '../helpers/api-erros'
 import { userRepository } from '../repositories/userRepository'
 import jwt from 'jsonwebtoken'
 
+// vamos dizer para typescript que o id que esta no --> const { id } = jwt.verify(token, process.env.JWT_PASS ?? '') ele existe 
 type JwtPayload = {
 	id: number
+
+	// agora va na verificação to toke e diga que o jwt ele em o tipo jet JwtPayload 
 }
 
 export const authMiddleware = async (req: Request, res: Response, next: NextFunction) => {
@@ -37,16 +40,21 @@ export const authMiddleware = async (req: Request, res: Response, next: NextFunc
 
 	const { id } = jwt.verify(token, process.env.JWT_PASS ?? '') as JwtPayload
 
-	// PARAMOS 1:10:00
+	// precisamos verifica se existe usuario no banco de dados 
 	const user = await userRepository.findOneBy({ id })
 
+	// se o usuario não existir no banco de dados  
 	if (!user) {
 		throw new UnauthorizedError('Não autorizado')
 	}
 
+	// vamos retornar os dados do usuario sem a senha
 	const { password: _, ...loggedUser } = user
 
-	req.user = loggedUser
+	// retornando os dados do usuario, para resolver o problema do user vamos criar um tipo no express va para a pasta @types no arquivo expres.d.ts
 
+	req.user = loggedUser // vamos chamar o req.use la no UserControlle
+
+	// o next function ele autoriza esse middleware a executar a nova tarefa a proxima chamada
 	next()
 }

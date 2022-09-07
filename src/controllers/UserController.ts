@@ -90,7 +90,7 @@ export class UserController {
 		// tirando o campo password de dentro do objeto que e retornado, porque não faz sentido retorna o hash senha que foi criada no banco de dados por questão de segurança 
 		const { password: _, ...userLogin } = user
 
-		// retornando um objeto que vai ter os dados do usuario 
+		// retornando um objeto que vai ter os dados do usuario e o token
 		return res.json({
 			user: userLogin, // retornando os dados sem a senha
 			token: token, // retornando o token que foi gerado	
@@ -101,6 +101,12 @@ export class UserController {
 
 	// a função getProfile vai ser um endpoint onde o usuario vai conseguir obter seus dados com base no token de login ou seja ele não vai passar nehuma informação para a rota e atraves do token de autenticação dele agente vai retornar todos os dados dele isso é uma rota protegida e pode ser todas as outras rotas protegidas do seu sistema da mesma forma	
 	async getProfile(req: Request, res: Response) {
+
+		// vindo do authmiddleware
 		return res.json(req.user)
+
+		// Se tivermos varios endpoints na aplicação onde também são rotas protegidas ou seja em cada endpoint eu vou precisar validar se o usuario esta logado e teria que fazer para cada um a estrutura desde o começo para cada uma das rotas
+
+		// Para isso vamos fazer a reutilização de codigo, vamos criar um middleware de autenticação va para pasta middleware e crie um arquivo authMiddleware.ts
 	}
 }

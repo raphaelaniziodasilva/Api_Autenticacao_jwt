@@ -14,7 +14,7 @@
 		"strict": true,
 		"noImplicitAny": true,
 		"strictPropertyInitialization": false,
-		"typeRoots": ["./src/@types"]
+		"typeRoots": ["./src/@types"] // passando as blibliotecas de types que eu criei
 	},
 	"include": ["src/**/*"],
 	"exclude": ["node_modules", "dist"],
